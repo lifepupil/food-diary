@@ -15,12 +15,23 @@ angular.module('food-diary', ['firebase'])
   var afFoods = $firebaseArray(fbFoods);
   $scope.foods = afFoods;
 
-  $scope.addFood = function() {
-    var now = new Date();
-    $scope.food.date = now.getTime();
-    $scope.foods.$add($scope.food).then(function() {
-      calculateBMI();
-    });
+  $scope.saveFood = function() {
+    console.log($scope.food);
+
+    if ($scope.food.$id) {
+      $scope.foods.$save($scope.food).then(function() {
+        calculateBMI();
+        $scope.food = {};
+      })
+    } else {
+      var now = new Date();
+      $scope.food.date = now.getTime();
+      $scope.foods.$add($scope.food).then(function() {
+        calculateBMI();
+        $scope.food = {};
+      });
+    }
+
   };
 
   $scope.showUserForm = function() {
@@ -56,6 +67,10 @@ angular.module('food-diary', ['firebase'])
     $scope.totalCals = totalCals;
     $scope.addedWeight = totalCals/3500;
   };
+
+  $scope.editFood = function(food) {
+    $scope.food = food;
+  }
 
   $scope.removeFood = function(index) {
     console.log('remove food click', index);

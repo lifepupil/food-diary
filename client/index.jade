@@ -67,20 +67,24 @@ html(lang='en', ng-app='food-diary')
           input.form-control(name='calServ', type='number', ng-model='food.calServ')
           label(for='servings') Number of Servings
           input.form-control(name='servings', type='number', ng-model='food.servings')
-          button.btn.btn-success(ng-click='addFood()') Add Food Item
+          button.btn.btn-success(ng-click='saveFood()') Save Food Item
           
       .row
         .col-xs-12
           table.table.table-striped
             thead
               tr
+                th Edit
+                th Delete
                 th Description
                 th Meal
                 th Calories
                 th Servings
                 th Date
             tbody
-              tr(ng-repeat='food in foods track by $index', ng-click='removeFood($index)')
+              tr(ng-repeat='food in foods track by $index')
+                td: button.btn.btn-info(ng-click='editFood(food)') Edit
+                td: button.btn-danger(ng-click='removeFood($index)') Delete
                 td {{food.description}}
                 td {{food.meal}}
                 td {{food.calServ}}
